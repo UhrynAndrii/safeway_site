@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SafeWay — Знай. Дій. Будь у безпеці.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
+<script src="script.js" defer></script>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')"><svg viewBox="0 0 32 32" fill="none" stroke="#3FA3CC" stroke-width="2" stroke-linejoin="round"><path d="M16 3 5 7v8c0 7 4.6 12.2 11 14 6.4-1.8 11-7 11-14V7L16 3z"/><path d="M16 9v8l4 3" stroke-linecap="round"/></svg><span>SafeWay</span></div>
+  <ul class="nav-links" id="navLinks">
+    <a onclick="showPage('home')">Головна</a>
+    <a onclick="showPage('emergency')">Ситуації</a>
+    <a onclick="showPage('map')">Карта</a>
+    <a onclick="showPage('alerts')">Карта тривог</a>
+    <a onclick="showPage('firstaid')">Перша допомога</a>
+    <a onclick="showPage('support')">Психологічна допомога</a>
+    <a onclick="showPage('kit')">Валіза</a>
+    <a onclick="showPage('contacts')">Контакти</a>
+    <a onclick="showPage('more')">Ще ▾</a>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-status" id="navStatus" onclick="showPage('alerts')"><i class="ns-dot"></i>Ситуація зараз</button>
+    <button class="nav-bell" onclick="showToast('Нових сповіщень немає')" aria-label="Сповіщення">🔔</button>
+    <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="home-top">
+    <div class="home-left">
+      <svg class="home-skyline" viewBox="0 0 560 190" preserveAspectRatio="xMaxYMax slice" aria-hidden="true"><defs><linearGradient id="skyg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16243a" stop-opacity="0"/><stop offset="1" stop-color="#16243a" stop-opacity=".9"/></linearGradient></defs><rect width="560" height="190" fill="url(#skyg)"/><rect x="0" y="91" width="38" height="79" fill="#0c1627"/><rect x="21" y="99" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="29" y="99" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="21" y="126" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="5" y="144" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="21" y="153" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="40" y="101" width="26" height="69" fill="#0c1627"/><rect x="45" y="136" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="70" y="64" width="26" height="106" fill="#0c1627"/><rect x="83" y="126" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="75" y="162" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="83" y="162" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="100" y="46" width="26" height="124" fill="#0c1627"/><rect x="105" y="72" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="105" y="90" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="105" y="162" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="113" y="162" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="126" y="99" width="26" height="71" fill="#0c1627"/><rect x="131" y="125" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="131" y="134" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="131" y="152" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="154" y="102" width="44" height="68" fill="#0c1627"/><rect x="159" y="110" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="191" y="128" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="198" y="40" width="26" height="130" fill="#0c1627"/><rect x="211" y="75" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="211" y="120" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="203" y="129" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="226" y="5" width="26" height="165" fill="#0c1627"/><rect x="231" y="31" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="231" y="67" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="239" y="67" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="231" y="85" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="231" y="139" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="256" y="82" width="26" height="88" fill="#0c1627"/><rect x="261" y="99" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="261" y="117" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="261" y="153" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="269" y="153" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="286" y="103" width="52" height="67" fill="#0c1627"/><rect x="307" y="138" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="315" y="147" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="307" y="156" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="342" y="60" width="52" height="110" fill="#0c1627"/><rect x="379" y="68" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="387" y="77" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="355" y="86" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="363" y="113" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="379" y="113" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="387" y="113" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="387" y="122" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="363" y="149" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="363" y="158" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="394" y="105" width="32" height="65" fill="#0c1627"/><rect x="407" y="122" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="415" y="122" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="399" y="140" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="407" y="158" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="415" y="158" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="430" y="73" width="32" height="97" fill="#0c1627"/><rect x="443" y="90" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="451" y="90" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="435" y="108" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="451" y="108" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="435" y="117" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="435" y="126" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="451" y="126" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="443" y="153" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="464" y="41" width="32" height="129" fill="#0c1627"/><rect x="469" y="49" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="477" y="58" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="477" y="76" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="469" y="94" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="477" y="103" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="469" y="121" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="477" y="148" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="469" y="157" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="485" y="157" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="496" y="71" width="52" height="99" fill="#0c1627"/><rect x="509" y="79" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="517" y="79" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="533" y="79" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="533" y="88" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="517" y="97" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="525" y="97" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="541" y="106" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="541" y="115" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="525" y="124" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="533" y="133" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="541" y="133" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect x="509" y="142" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="501" y="160" width="3" height="4" fill="#f2c26b" opacity="0.5"/><rect x="509" y="160" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="552" y="97" width="32" height="73" fill="#0c1627"/><rect x="573" y="132" width="3" height="4" fill="#f2c26b" opacity="0.9"/><rect x="573" y="141" width="3" height="4" fill="#f2c26b" opacity="0.7"/><rect y="170" width="560" height="20" fill="#0a1424"/><rect y="172" width="560" height="1" fill="#3FA3CC" opacity=".25"/></svg>
+      <h1 class="home-title">Що <span>відбувається?</span></h1>
+      <p class="home-lead">Оберіть ситуацію, щоб отримати коротку інструкцію щодо необхідних дій.</p>
+      <div class="sit-grid">
+        <div class="sit-tile" onclick="openEmergency('air')"><div class="icon">🚨</div><div class="row"><div class="label">Повітряна тривога</div><span class="arrow">→</span></div></div>
+        <div class="sit-tile" onclick="openEmergency('fire')"><div class="icon">🔥</div><div class="row"><div class="label">Пожежа</div><span class="arrow">→</span></div></div>
+        <div class="sit-tile" onclick="openEmergency('shelling')"><div class="icon">💥</div><div class="row"><div class="label">Обстріл</div><span class="arrow">→</span></div></div>
+        <div class="sit-tile" onclick="openEmergency('radiation')"><div class="icon">☢️</div><div class="row"><div class="label">Радіаційна небезпека</div><span class="arrow">→</span></div></div>
+        <div class="sit-tile" onclick="openEmergency('chemical')"><div class="icon">🧪</div><div class="row"><div class="label">Хімічна небезпека</div><span class="arrow">→</span></div></div>
+        <div class="sit-tile" onclick="openEmergency('collapse')"><div class="icon">🏚</div><div class="row"><div class="label">Завал</div><span class="arrow">→</span></div></div>
+        <div class="sit-tile" onclick="openEmergency('flood')"><div class="icon">🌊</div><div class="row"><div class="label">Затоплення</div><span class="arrow">→</span></div></div>
+        <div class="sit-tile" onclick="openEmergency('storm')"><div class="icon">⛈</div><div class="row"><div class="label">Стихійне лихо</div><span class="arrow">→</span></div></div>
+        <div class="sit-tile" onclick="openEmergency('power')"><div class="icon">⚡</div><div class="row"><div class="label">Відсутність електроенергії</div><span class="arrow">→</span></div></div>
+        <div class="sit-tile" onclick="openEmergency('accident')"><div class="icon">🚗</div><div class="row"><div class="label">ДТП</div><span class="arrow">→</span></div></div>
+        <div class="sit-tile" onclick="openEmergency('injury')"><div class="icon">🩹</div><div class="row"><div class="label">Травма</div><span class="arrow">→</span></div></div>
+        <div class="sit-tile" onclick="openEmergency('extreme-temp')"><div class="icon">🌡</div><div class="row"><div class="label">Екстремальні температури</div><span class="arrow">→</span></div></div>
+      </div>
+    </div>
+    <aside class="status-widget">
+      <h3>📡 Ситуація зараз</h3>
+      <div class="sw-sub">Інформація про поточні повітряні тривоги по областях.</div>
+      <div id="homeMiniMap" onclick="showPage('alerts')"></div>
+      <div id="homeStatusList"></div>
+      <button class="sw-btn" onclick="showPage('alerts')">Детальніше →</button>
+    </aside>
+  </div>
+
+  <section class="quick-panel">
+    <h3>⚡ Швидкі дії</h3>
+    <div class="qp-sub">Перейдіть до потрібного розділу одним кліком.</div>
+    <div class="qcards">
+      <button class="qcard" onclick="showPage('map')"><span class="qi">📍</span><strong>Знайти укриття</strong><span class="q">Відкриває карту з укриттями, лікарнями та іншими важливими об'єктами.</span><span class="go">→</span></button>
+      <button class="qcard" onclick="showPage('contacts')"><span class="qi">📞</span><strong>Екстрені контакти</strong><span class="q">Швидкий доступ до номерів служб допомоги.</span><span class="go">→</span></button>
+      <button class="qcard" onclick="showPage('firstaid')"><span class="qi">🩺</span><strong>Перша допомога</strong><span class="q">Каталог медичних інструкцій у короткому форматі.</span><span class="go">→</span></button>
+      <button class="qcard" onclick="showPage('kit')"><span class="qi">🎒</span><strong>Тривожна валіза</strong><span class="q">Інтерактивний чекліст необхідних речей.</span><span class="go">→</span></button>
+    </div>
+  </section>
+
+  <!-- РЕКЛАМНЕ МІСЦЕ: налаштовується у скрипті через const AD_HOME (img/link або html-код) -->
+  <section class="ad-slot" id="adSlotHome" aria-label="Реклама">
+    <span class="ad-tag">Реклама</span>
+    <div class="ad-body" id="adBodyHome"></div>
+  </section>
+
+  <section class="brand-banner">
+    <div class="bb-logo"><svg viewBox="0 0 32 32" fill="none" stroke="#3FA3CC" stroke-width="2" stroke-linejoin="round"><path d="M16 3 5 7v8c0 7 4.6 12.2 11 14 6.4-1.8 11-7 11-14V7L16 3z"/><path d="M16 9v8l4 3" stroke-linecap="round"/></svg><span>SafeWay</span></div>
+    <div class="bb-slogan">Знай. Дій. Будь у безпеці.</div>
+    <div class="bb-text"><strong style="color:var(--text)">SafeWay</strong> — це інформаційний помічник у надзвичайних ситуаціях. Ми об'єднуємо важливу інформацію, щоб ви були готові до будь-яких викликів.</div>
+    <button class="bb-btn" onclick="showPage('about')">Дізнатися більше →</button>
+  </section>
+</div>
+
+<!-- DONATE -->
+<div class="page" id="page-donate" style="max-width:1000px">
+  <div class="pg-hero"><div class="pg-ic">❤️</div><div class="pg-ht"><h2>Підтримати <span>SafeWay</span></h2><p>Ваш внесок допоможе розвивати проєкт і підтримувати його роботу.</p></div><div class="pg-slogan">Дякуємо, що ви з нами!</div></div>
+  <div class="contacts-layout">
+    <div class="panel"><h3>Оберіть спосіб підтримки</h3><div class="sub">Будь-яка сума важлива. Це добровільний внесок на розвиток SafeWay.</div><div id="donateMethods"></div></div>
+    <div class="side-col">
+      <div class="panel"><h4>Інші способи допомогти</h4><ul class="tips"><li>Розкажіть про SafeWay друзям і родині.</li><li>Станьте партнером або розмістіть рекламу.</li></ul><button class="btn-blue" onclick="openLead('Партнерство / реклама')">Стати партнером →</button></div>
+      <div class="panel ready-box"><b>Дякуємо!</b><span>Кожна гривня допомагає зробити інформацію про безпеку доступнішою.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- EMERGENCY -->
+<div class="page" id="page-emergency">
+  <div class="pg-hero"><div class="pg-ic">⚠️</div><div class="pg-ht"><h2>Надзвичайні <span>ситуації</span></h2><p>Оберіть ситуацію, щоб дізнатися, як правильно діяти.</p></div><div class="pg-slogan"></div></div>
+  <div class="em-layout">
+    <div class="panel"><div class="nav-list" id="emNav"></div></div>
+    <div class="panel" id="emMain"></div>
+    <div class="side-col">
+      <div class="panel"><h4>❓ Важливо знати</h4><div class="info-row"><i>●</i><span>Дійте спокійно, без паніки — швидко та за інструкцією.</span></div><div class="info-row"><i>●</i><span>Не публікуйте фото й відео з місць обстрілів.</span></div><div class="info-row"><i>●</i><span>Довіряйте лише офіційним джерелам інформації.</span></div></div>
+      <div class="panel"><h4>⚡ Швидкі дії</h4><button class="qa-link" onclick="showPage('map')"><span>📍</span><span>Знайти укриття</span><span>›</span></button><button class="qa-link" onclick="showPage('contacts')"><span>📞</span><span>Екстрені контакти</span><span>›</span></button><button class="qa-link" onclick="showPage('firstaid')"><span>🩺</span><span>Перша допомога</span><span>›</span></button><button class="qa-link" onclick="showPage('kit')"><span>🧳</span><span>Тривожна валіза</span><span>›</span></button></div>
+      <div class="panel ready-box"><b>Зберігайте спокій.</b><span>Знання рятують життя.</span></div>
+    </div>
+  </div>
+</div>
+<!-- MAP -->
+<div class="page" id="page-map">
+  <div class="page-header"><h2>Карта</h2><p>Укриття, лікарні, аптеки та інші важливі об'єкти поблизу.</p></div>
+  <div class="map-filters">
+    <button class="filter-btn active" onclick="filterMap(this,'all')">Усі</button>
+    <button class="filter-btn" onclick="filterMap(this,'shelter')">🏠 Укриття</button>
+    <button class="filter-btn" onclick="filterMap(this,'hospital')">🏥 Лікарні</button>
+    <button class="filter-btn" onclick="filterMap(this,'pharmacy')">💊 Аптеки</button>
+    <button class="filter-btn" onclick="filterMap(this,'aid')">🔵 Пункти допомоги</button>
+    <button class="filter-btn" onclick="filterMap(this,'fire')">🚒 Пожежні</button>
+    <button class="filter-btn" onclick="filterMap(this,'resilience')">⚡ Незламності</button>
+  </div>
+  <div id="leafletMap"></div>
+  <div class="map-list-title">Об'єкти на карті</div>
+  <div class="map-objects" id="mapObjects"></div>
+</div>
+
+<!-- STATUS -->
+<div class="page" id="page-status">
+  <div class="page-header"><h2>Ситуація зараз</h2><p>Актуальний стан безпеки по регіонах України.</p></div>
+  <div class="status-card">
+    <div class="status-indicator"><div class="status-dot danger"></div>🔴 Повітряна тривога</div>
+    <div class="status-time">Оновлено: щойно · Ваш регіон: Чернівецька область</div>
+    <div class="status-rec"><h4>⚠️ Рекомендації</h4><ul><li>Негайно перейдіть до найближчого укриття</li><li>Не перебувайте біля вікон</li><li>Тримайте телефон при собі</li><li>Слідкуйте за офіційними каналами</li></ul></div>
+  </div>
+  <button class="b2b-cta" style="margin-bottom:8px" onclick="showPage('alerts')">🗺 Відкрити карту тривог</button>
+  <div class="section-label" style="margin-top:24px">Статус по регіонах</div>
+  <div class="regions-grid" id="regionsGrid"></div>
+</div>
+
+<!-- ALERT MAP -->
+<div class="page" id="page-alerts">
+  <div class="page-header"><h2>Карта тривог</h2><p>Стан повітряної тривоги по областях України. Натисніть на область, щоб побачити деталі.</p></div>
+  <div class="alert-summary" id="alertStats"></div>
+  <div class="alert-mine" id="alertMine"></div>
+  <div id="alertPaneOfficial">
+    <div class="official-bar"><span>Офіційна мапа: map.ukrainealarm.com (Ajax Systems · Мінцифри)</span><a class="route-btn" href="https://map.ukrainealarm.com/" target="_blank" rel="noopener">Відкрити в новій вкладці ↗</a></div>
+    <iframe id="officialFrame" title="Офіційна мапа повітряних тривог" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
+    <div class="alert-note" style="margin:0 0 24px">Якщо мапа не відображається (сайт може забороняти вбудовування) — відкрийте її в новій вкладці або перейдіть на «Мапу SafeWay».</div>
+  </div>
+  <div id="alertPaneOurs" style="display:none">
+  <div class="alert-toolbar">
+    <div class="map-filters" id="alertFilters">
+      <button class="filter-btn active" onclick="filterAlerts(this,'all')">Усі</button>
+      <button class="filter-btn" onclick="filterAlerts(this,'danger')">🔴 Тривога</button>
+      <button class="filter-btn" id="fWarn" onclick="filterAlerts(this,'warning')">🟡 Попередження</button>
+      <button class="filter-btn" onclick="filterAlerts(this,'safe')">🟢 Спокійно</button>
+    </div>
+    <div class="alert-updated"><span id="alertUpdated">Оновлено: —</span><button class="alert-refresh" id="alertRefreshBtn" onclick="refreshAlerts(true)">⟳ Оновити</button></div>
+  </div>
+  <div id="alertMap"></div>
+  <div class="alert-legend">
+    <span><i style="background:#C65353"></i>Повітряна тривога</span>
+    <span id="legWarn"><i style="background:#D4A017"></i>Попередження / загроза</span>
+    <span><i style="background:#5F9675"></i>Спокійно</span>
+    <span><i style="background:#7a8798"></i>Немає даних</span>
+    <span><i style="background:transparent;border:2px solid #63AFC5"></i>Ваш регіон</span>
+  </div>
+  </div>
+  <div class="map-list-title">Області</div>
+  <div class="map-objects" id="alertList"></div>
+  <div class="alert-note" id="alertNote"></div>
+</div>
+
+<!-- FIRST AID -->
+<div class="page" id="page-firstaid">
+  <div class="pg-hero"><div class="pg-ic">🩺</div><div class="pg-ht"><h2>Перша <span>допомога</span></h2><p>Швидка та правильна допомога може врятувати життя. Оберіть ситуацію, щоб отримати покрокові інструкції.</p></div><div class="pg-slogan">Знання можуть<br>врятувати життя!</div></div>
+  <div class="aid-layout">
+    <div class="panel"><div class="nav-list" id="aidNav"></div></div>
+    <div class="panel" id="aidMain"></div>
+    <div class="side-col">
+      <div class="panel warn-red"><b>❗ Важливо знати!</b><span id="aidWarn"></span></div>
+      <div class="panel"><h4>💡 Корисні поради</h4><ul class="tips"><li>Спершу переконайтесь, що місце безпечне для вас.</li><li>Використовуйте чисті тканини або стерильні серветки.</li><li>Не залишайте постраждалого без нагляду.</li><li>Стежте за його станом до приїзду медиків.</li></ul></div>
+      <button class="qa-link" style="padding:16px" onclick="showPage('contacts')"><span>📞</span><span><b>Екстрені контакти</b></span><span>›</span></button>
+    </div>
+  </div>
+  <div class="panel more-cats"><h4>Інші категорії першої допомоги</h4><div class="more-row" id="aidMore"></div></div>
+</div>
+<!-- KIT -->
+<div class="page" id="page-kit">
+  <div class="pg-hero"><div class="pg-ic">🧳</div><div class="pg-ht"><h2>Тривожна <span>валіза</span></h2><p>Зберіть необхідні речі заздалегідь, щоб бути готовим до будь-якої надзвичайної ситуації.</p></div><div class="pg-slogan">Підготовка<br>рятує життя!</div></div>
+  <div class="kit-layout">
+    <div class="panel"><div class="kit-cats" id="kitCats"></div></div>
+    <div class="panel" id="kitMain"></div>
+    <div class="side-col">
+      <div class="panel"><h4>💡 Корисні поради</h4><ul class="tips"><li>Регулярно перевіряйте термін придатності їжі та ліків.</li><li>Оновлюйте вміст валізи хоча б раз на 6 місяців.</li><li>Зберігайте копії документів у водонепроникному пакеті.</li><li>Підготуйте валізу для всіх членів сім'ї, включно з дітьми та літніми людьми.</li></ul></div>
+      <div class="panel ready-box"><b>Будьте готові!</b><span>Тривожна валіза — це не про страх, а про впевненість у завтрашньому дні.</span></div>
+      <div class="panel"><h4>Ваш прогрес</h4><div class="ring-row"><div class="ring" id="kitRing"><i id="kitPct">0%</i></div><small id="kitSmall">Вибрано речей<br>0 з 0</small></div><button class="btn-blue" onclick="resetKit()">⟳ Скинути чекліст</button></div>
+    </div>
+  </div>
+</div>
+<!-- CONTACTS -->
+<div class="page" id="page-contacts">
+  <div class="pg-hero"><div class="pg-ic">📞</div><div class="pg-ht"><h2>Екстренні <span>контакти</span></h2><p>Швидкий доступ до номерів екстрених служб та корисних контактів. Збережіть ці номери, щоб мати їх під рукою в разі потреби.</p></div><div class="pg-slogan">Кожна секунда<br>має значення!</div></div>
+  <div class="contacts-layout">
+    <div><div class="panel"><h3>Основні екстрені служби</h3><div class="sub">Номери, які можуть знадобитися в будь-якій надзвичайній ситуації.</div><div class="svc-grid"><div class="svc red"><div class="top"><span class="ic">🚒</span><span class="num">101</span></div><b>Служба порятунку</b><small>Пожежі, надзвичайні ситуації, пошук людей.</small><a href="tel:101">📞 Зателефонувати</a></div><div class="svc blue"><div class="top"><span class="ic">🚓</span><span class="num">102</span></div><b>Поліція</b><small>Правопорушення, крадіжки, допомога громадянам.</small><a href="tel:102">📞 Зателефонувати</a></div><div class="svc red"><div class="top"><span class="ic">🚑</span><span class="num">103</span></div><b>Швидка медична допомога</b><small>Термінова медична допомога, невідкладні стани.</small><a href="tel:103">📞 Зателефонувати</a></div><div class="svc yel"><div class="top"><span class="ic">🔥</span><span class="num">104</span></div><b>Аварійна газова служба</b><small>Запах газу, аварії з газовими мережами.</small><a href="tel:104">📞 Зателефонувати</a></div><div class="svc blue"><div class="top"><span class="ic">🆘</span><span class="num">112</span></div><b>Єдиний номер екстрених служб</b><small>Працює в усіх регіонах України. З'єднує з потрібною службою.</small><a href="tel:112">📞 Зателефонувати</a></div><div class="svc grn"><div class="top"><span class="ic">🧠</span><span class="num">0 800 100 102</span></div><b>Психологічна допомога</b><small>Психологічна підтримка, кризові стани.</small><a href="tel:0800100102">📞 Зателефонувати</a></div><div class="svc pur"><div class="top"><span class="ic">👶</span><span class="num">116 111</span></div><b>Дитяча лінія</b><small>Допомога дітям і підліткам, безкоштовно.</small><a href="tel:116111">📞 Зателефонувати</a></div><div class="svc yel"><div class="top"><span class="ic">☎️</span><span class="num">1545</span></div><b>Гаряча лінія</b><small>Довідкова та консультаційна підтримка.</small><a href="tel:1545">📞 Зателефонувати</a></div></div></div>
+      <div class="contacts-bottom"><div class="panel"><h3>📍 Контакти за регіоном (Чернівці)</h3><div class="sub">Телефони місцевих служб і центрів допомоги.</div><div class="ph-row"><span>🚌 Евакуація (Чернівці)</span><a href="tel:0800505501">0 800 505 501</a></div><div class="ph-row"><span>🏥 Міська лікарня №1</span><a href="tel:+38037255-11-22">+38 0372 55-11-22</a></div><div class="ph-row"><span>🔵 Гаряча лінія ДСНС</span><a href="tel:0800501477">0 800 501 477</a></div></div>
+      <div class="panel"><h3>Додаткові корисні номери</h3><div class="sub">Гарячі лінії та важливі служби.</div><div class="ph-row"><span>Психологічна допомога</span><a href="tel:0800100102">0 800 100 102</a></div><div class="ph-row"><span>Дитяча гаряча лінія</span><a href="tel:116111">116 111</a></div><div class="ph-row"><span>Гаряча лінія</span><a href="tel:1545">1545</a></div></div></div></div>
+    <div class="side-col">
+      <div class="panel"><h3>🚨 Швидкий виклик</h3><div class="sub">Натисніть, щоб набрати</div><a class="qc-row" href="tel:101"><b style="color:#E5555A">101</b><span>Пожежна служба</span><em>›</em></a><a class="qc-row" href="tel:102"><b style="color:#5EBFE6">102</b><span>Поліція</span><em>›</em></a><a class="qc-row" href="tel:103"><b style="color:#E5555A">103</b><span>Швидка допомога</span><em>›</em></a><a class="qc-row" href="tel:104"><b style="color:#E0B33A">104</b><span>Газова служба</span><em>›</em></a><a class="qc-row" href="tel:112"><b style="color:#5FC08A">112</b><span>Єдиний номер</span><em>›</em></a></div>
+      <div class="panel"><h4>ℹ️ Корисні поради</h4><ul class="tips"><li>Збережіть ці номери в телефоні.</li><li>Повідомляйте точну адресу і суть ситуації.</li><li>Не кладіть слухавку, поки диспетчер не підтвердить, що виклик прийнято.</li><li>За можливості уникайте паніки й дійте спокійно.</li></ul></div>
+      <div class="panel ready-box"><b>Пам'ятайте:</b><span class="quote">Ваша безпека — у ваших руках!</span></div>
+    </div>
+  </div>
+</div>
+<!-- PREPARE -->
+<div class="page" id="page-prepare">
+  <div class="pg-hero"><div class="pg-ic">🛡</div><div class="pg-ht"><h2>Підго<span>товка</span></h2><p>Краще підготуватися заздалегідь, ніж діяти в стресі. Зберіть необхідні речі, перевірте житло, підготуйте документи та дізнайтеся, як бути готовим до будь-якої надзвичайної ситуації.</p></div><div class="pg-slogan">Готовність<br>рятує життя! ♡</div></div>
+  <div class="prep-grid"><div class="panel prep"><span class="art">🎒</span><h3><i>🧳</i>Тривожна валіза</h3><p>Підготуйте набір необхідних речей, який допоможе пережити перші 72 години.</p><ul><li>Документи</li><li>Їжа та вода</li><li>Аптечка</li><li>Одяг та засоби гігієни</li></ul><button onclick="openKit('basic')">Перейти до чекліста →</button></div><div class="panel prep"><span class="art">🏡</span><h3><i>🏠</i>Підготовка житла</h3><p>Перевірте, що у вашому домі все готово до можливих надзвичайних ситуацій.</p><ul><li>Електрика та газ</li><li>Вікна та двері</li><li>Запаси води</li><li>Засоби безпеки</li></ul><button onclick="openEmergency('fire')">Дізнатися більше →</button></div><div class="panel prep"><span class="art">📘</span><h3><i>📄</i>Документи</h3><p>Заздалегідь підготуйте важливі документи в паперовому та електронному вигляді.</p><ul><li>Паспорт</li><li>Ідентифікаційний код</li><li>Медичні документи</li><li>Страхові поліси</li></ul><button onclick="openKit('docs')">Що потрібно підготувати →</button></div><div class="panel prep"><span class="art">🥫</span><h3><i>💧</i>Запас води та їжі</h3><p>Забезпечте себе достатньою кількістю води та продуктів, що довго зберігаються.</p><ul><li>Питна вода (3 л на людину на день)</li><li>Консерви та сухі продукти</li><li>Їжа для дітей і людей з особливими потребами</li><li>Термін придатності</li></ul><button onclick="openKit('food')">Рекомендації →</button></div><div class="panel prep"><span class="art">🔦</span><h3><i>⚡</i>Автономність</h3><p>Подбайте про альтернативні джерела живлення та засоби для комфортного перебування без електроенергії.</p><ul><li>Павербанк</li><li>Ліхтарик</li><li>Батарейки</li><li>Генератор (за можливості)</li></ul><button onclick="openKit('el')">Корисні поради →</button></div><div class="panel prep"><span class="art">🧭</span><h3><i>🗺</i>План евакуації</h3><p>Визначте маршрути евакуації та місця, куди можна звернутися по допомогу.</p><ul><li>Основні маршрути</li><li>Місця збору</li><li>Контакти близьких</li><li>Найближчі укриття</li></ul><button onclick="showPage('map')">Як скласти план →</button></div></div>
+</div>
+<!-- SUPPORT -->
+<div class="page" id="page-support">
+  <div class="sp-hero">
+    <div class="sp-hero-ico">🧠</div>
+    <div><h2>Психологічна <span>підтримка</span></h2><p>Інформаційна підтримка — не заміна професійної допомоги.</p></div>
+  </div>
+  <div class="sp-grid" id="supportSections"></div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="ab-hero">
+    <svg viewBox="0 0 64 64" fill="none" stroke="#3FA3CC" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M32 5 8 14v16c0 15 10 25 24 29 14-4 24-14 24-29V14L32 5z"/><path d="m21 32 8 8 15-16"/></svg>
+    <div>
+      <h2>Про <span>SafeWay</span></h2>
+      <div class="slogan">«Знай. Дій. Будь у безпеці.»</div>
+      <p>SafeWay — це сучасний інформаційно-довідковий вебсервіс, який допомагає людям швидко отримати актуальну інформацію та зрозумілі інструкції під час надзвичайних ситуацій. Ми об'єднали всі важливі сервіси в одному місці, щоб ви могли бути готовими, знати, що робити, і почуватися в безпеці.</p>
+    </div>
+  </div>
+  <div class="ab-cards">
+    <div class="about-block ab-card"><h3><i>🎯</i>Наша мета</h3><p>Надати кожному користувачу швидкий доступ до перевіреної інформації, інструкцій та контактів, які можуть врятувати життя у критичній ситуації.</p></div>
+    <div class="about-block ab-card"><h3><i>👥</i>Для кого ми створені</h3><p>Для всіх: дітей, дорослих, сімей, людей з особливими потребами. SafeWay — для кожного, хто хоче бути підготовленим.</p></div>
+    <div class="about-block ab-card"><h3><i>💡</i>Чому SafeWay?</h3><ul><li>Усе необхідне в одному сервісі</li><li>Зручний та зрозумілий інтерфейс</li><li>Актуальна інформація</li><li>Допомога в будь-якій ситуації</li></ul></div>
+  </div>
+  <div class="about-blocks">
+    <div class="about-block ab-card"><h3><i>🛡️</i>Наша місія</h3><p>Зробити життя людей безпечнішим, надаючи доступ до важливої інформації та інструментів для дій у надзвичайних ситуаціях.</p><div class="ab-quote">❝ Безпека починається з знань.<br>SafeWay — ваш надійний помічник у будь-якій ситуації.</div></div>
+    <div class="about-block"><h3>Дорожня карта</h3><div class="version-grid"><div class="version-card"><strong>MVP v1.0</strong><ul><li>Головна</li><li>Ситуації</li><li>Карта</li><li>Контакти</li><li>Перша допомога</li><li>Валіза</li></ul></div><div class="version-card"><strong>v2.0</strong><ul><li>Ситуація зараз</li><li>Push-сповіщення</li><li>Психопідтримка</li></ul></div><div class="version-card"><strong>Майбутнє</strong><ul><li>Мобільний застосунок</li><li>AI-помічник</li><li>B2B-кабінети</li></ul></div></div></div>
+    <div class="about-block"><h3>Підтримати SafeWay ❤️</h3><p>SafeWay створюється як доступний інформаційний сервіс без реклами.</p></div>
+  </div>
+</div>
+
+<!-- B2B -->
+<div class="page" id="page-b2b">
+  <div class="b2b-hero"><h2>SafeWay для бізнесу</h2><p>Корпоративні рішення для підприємств, шкіл, ТРЦ та організацій</p></div>
+  <div class="b2b-features">
+    <div class="b2b-feature"><div class="icon">🗺</div><div><h4>Власна карта об'єкта</h4><p>Інтерактивна карта вашої будівлі з позначенням виходів та укриттів</p></div></div>
+    <div class="b2b-feature"><div class="icon">📋</div><div><h4>План евакуації</h4><p>Цифровий план евакуації з актуальними маршрутами</p></div></div>
+    <div class="b2b-feature"><div class="icon">👷</div><div><h4>Відповідальні особи</h4><p>База контактів відповідальних за безпеку на об'єкті</p></div></div>
+    <div class="b2b-feature"><div class="icon">📚</div><div><h4>Навчальні матеріали</h4><p>Інструкції та тести для навчання персоналу</p></div></div>
+    <div class="b2b-feature"><div class="icon">✅</div><div><h4>Корпоративні чеклісти</h4><p>Персоналізовані списки перевірки готовності</p></div></div>
+    <div class="b2b-feature"><div class="icon">🔔</div><div><h4>Сповіщення</h4><p>Push-сповіщення для всіх співробітників об'єкта</p></div></div>
+  </div>
+  <button class="b2b-cta" onclick="openLead('Корпоративні рішення для об\'єкта')">Залишити заявку</button>
+</div>
+
+<!-- MORE (stub) -->
+<div class="page" id="page-more">
+  <div class="mr-head">
+    <div class="mr-grid"><i></i><i></i><i></i><i></i></div>
+    <div><h2>Інше</h2><p>Корисна інформація та додаткові сервіси, які допоможуть бути краще підготовленим і впевненішим у будь-якій ситуації.</p></div>
+  </div>
+  <div class="mr-cards">
+    <div class="mr-card">
+      <div class="mr-top"><div class="mr-ico">🎒</div><div><h3>Підготовка</h3><span>Заздалегідь подбайте про свою безпеку.</span></div></div>
+      <p class="mr-desc">Дізнайтеся, як правильно підготуватися до надзвичайних ситуацій та що варто мати вдома.</p>
+      <ul class="mr-list"><li>Тривожна валіза</li><li>Запас води та їжі</li><li>Підготовка житла</li><li>Автономність</li><li>Документи</li><li>План евакуації</li></ul>
+      <button class="mr-btn" onclick="showPage('prepare')">Перейти до розділу →</button>
+    </div>
+    <div class="mr-card">
+      <div class="mr-top"><div class="mr-ico">🧠</div><div><h3>Психологічна підтримка</h3><span>Ви не самі. Турбота про ментальне здоров'я важлива.</span></div></div>
+      <p class="mr-desc">Отримайте поради, знайдіть корисні ресурси та контакти для підтримки у складні моменти.</p>
+      <ul class="mr-list"><li>Поради психологів</li><li>Контакти спеціалістів</li><li>Дихальні практики</li><li>Підтримка для близьких</li><li>Корисні ресурси</li><li>Як впоратися зі стресом</li></ul>
+      <button class="mr-btn" onclick="showPage('support')">Перейти до розділу →</button>
+    </div>
+    <div class="mr-card">
+      <div class="mr-top"><div class="mr-ico">🛡️</div><div><h3>Про SafeWay</h3><span>Дізнайтеся більше про наш проєкт.</span></div></div>
+      <p class="mr-desc">SafeWay — інформаційно-довідковий вебсервіс, який допомагає людям швидко отримати актуальну інформацію та знизити ризики під час надзвичайних ситуацій.</p>
+      <ul class="mr-list one"><li>Наша мета</li><li>Наша місія</li><li>Дорожня карта</li></ul>
+      <button class="mr-btn" onclick="showPage('about')">Детальніше про проєкт →</button>
+    </div>
+    <div class="mr-card">
+      <div class="mr-top"><div class="mr-ico">💼</div><div><h3>Для бізнесу</h3><span>Безпека та готовність — це стабільність.</span></div></div>
+      <p class="mr-desc">Дізнайтеся, як ваш бізнес може бути краще підготовленим до надзвичайних ситуацій. Ми пропонуємо рішення та рекомендації для організацій і компаній.</p>
+      <ul class="mr-list one"><li>Консультації та навчання</li><li>Плани безпеки для бізнесу</li><li>Корпоративні рішення</li></ul>
+      <button class="mr-btn" onclick="showPage('b2b')">Дізнатися більше →</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-row">
+    <div class="fr-brand"><svg viewBox="0 0 32 32" fill="none" stroke="#3FA3CC" stroke-width="2" stroke-linejoin="round"><path d="M16 3 5 7v8c0 7 4.6 12.2 11 14 6.4-1.8 11-7 11-14V7L16 3z"/><path d="M16 9v8l4 3" stroke-linecap="round"/></svg>SafeWay</div>
+    <div class="fr-slogan">Знай. Дій. Будь у безпеці.</div>
+    <div class="fr-links">
+      <a onclick="showPage('about')">Про проєкт</a><a onclick="showPage('contacts')">Контакти</a><a onclick="showPage('b2b')">Для бізнесу</a><a onclick="showPage('donate')">Підтримати ❤️</a>
+    </div>
+  </div>
+  <div class="footer-disclaimer">Інформація на сайті має довідковий характер і не замінює офіційні повідомлення екстрених служб або професійну медичну допомогу.</div>
+</footer>
+
+<div class="modal" id="leadModal" onclick="if(event.target===this)closeLead()">
+  <div class="modal-box" id="leadBox">
+    <button class="modal-x" onclick="closeLead()" aria-label="Закрити">✕</button>
+    <div id="leadFormWrap">
+      <h3>Залишити заявку</h3><p>Заповніть форму — ми зв'яжемося з вами найближчим часом.</p>
+      <div class="fld" id="f_name"><label>Ім'я та прізвище *</label><input id="leadName" autocomplete="name"></div>
+      <div class="fld"><label>Організація / компанія</label><input id="leadOrg" autocomplete="organization"></div>
+      <div class="fld" id="f_contact"><label>Телефон або e-mail *</label><input id="leadContact" autocomplete="email"></div>
+      <div class="fld"><label>Що вас цікавить</label><select id="leadTopic"><option>Корпоративні рішення для об'єкта</option><option>Реклама на сайті</option><option>Партнерство / реклама</option><option>Партнерство (магазини, аптеки)</option><option>Підтримка / донат</option><option>Інше</option></select></div>
+      <div class="fld"><label>Повідомлення</label><textarea id="leadMsg" rows="3"></textarea></div>
+      <label class="consent"><input type="checkbox" id="leadConsent"> Погоджуюсь на обробку моїх контактних даних для відповіді на заявку.</label>
+      <button class="btn-blue" id="leadSend" onclick="submitLead()" style="margin-top:0">Надіслати заявку</button>
+    </div>
+    <div class="lead-ok" id="leadOk" style="display:none"><div class="big">✅</div><h3>Дякуємо за заявку!</h3><p id="leadOkText">Ми зв'яжемося з вами найближчим часом.</p><button class="btn-blue" onclick="closeLead()">Закрити</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+</body>
+</html>
